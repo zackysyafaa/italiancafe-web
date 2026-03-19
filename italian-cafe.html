@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Italian Cafe — L'arte della tradizione</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream:    '#F5EFE0',
+            parchment:'#EDE4CC',
+            linen:    '#F9F4EA',
+            sage:     '#6B7F5E',
+            forest:   '#3D5A40',
+            moss:     '#4E6B45',
+            earth:    '#7A5C3E',
+            bark:     '#5C3D2E',
+            espresso: '#2C1A0E',
+            gold:     '#B8963E',
+            muted:    '#9E8E76',
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body:    ['Cormorant Garamond', 'serif'],
+            sans:    ['Jost', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #F5EFE0;
+      color: #2C1A0E;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    * { position: relative; z-index: 1; }
+
+    /* Hero parallax placeholder */
+    .hero-img {
+      background: linear-gradient(160deg, #3D5A40 0%, #2C1A0E 50%, #5C3D2E 100%);
+    }
+
+    /* Decorative divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #B8963E, transparent);
+    }
+
+    /* Card hover */
+    .menu-card {
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.35s ease;
+    }
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(44, 26, 14, 0.15);
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.3s; }
+    .delay-3 { animation-delay: 0.45s; }
+    .delay-4 { animation-delay: 0.6s; }
+
+    /* Nav underline */
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: #B8963E;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Hero overlay */
+    .hero-overlay {
+      background: linear-gradient(to bottom,
+        rgba(44,26,14,0.45) 0%,
+        rgba(44,26,14,0.3) 50%,
+        rgba(44,26,14,0.72) 100%);
+    }
+
+    /* WA button pulse */
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(107, 127, 94, 0.55); }
+      70%  { box-shadow: 0 0 0 14px rgba(107, 127, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(107, 127, 94, 0); }
+    }
+    .wa-btn { animation: pulse-ring 2.4s infinite; }
+
+    /* Section label */
+    .section-label {
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      color: #B8963E;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F5EFE0; }
+    ::-webkit-scrollbar-thumb { background: #9E8E76; border-radius: 3px; }
+  </style>
+</head>
+<body class="font-body">
+
+  <!-- ══════════════ NAVBAR ══════════════ -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-cream/90 backdrop-blur-md border-b border-gold/20">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#hero" class="font-display text-xl font-semibold text-espresso tracking-wide">
+        Italian <span class="text-gold italic">Cafe</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 font-sans text-sm text-espresso/80">
+        <a href="#menu"    class="nav-link hover:text-espresso">Menu</a>
+        <a href="#about"   class="nav-link hover:text-espresso">Tentang</a>
+        <a href="#contact" class="nav-link hover:text-espresso">Kontak</a>
+      </div>
+      <a href="https://wa.me/6281234567890?text=Halo!%20Saya%20ingin%20memesan%20di%20Italian%20Cafe."
+         target="_blank"
+         class="font-sans text-xs tracking-widest uppercase px-5 py-2.5 bg-forest text-cream rounded-full hover:bg-moss transition-colors duration-300">
+        Pesan Sekarang
+      </a>
+    </div>
+  </nav>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <section id="hero" class="relative min-h-screen flex flex-col">
+    <!-- Background -->
+    <div class="hero-img absolute inset-0">
+      <!-- Placeholder pattern that simulates a moody coffee-shop photo -->
+      <div class="absolute inset-0 flex items-center justify-center opacity-10">
+        <svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="300" cy="300" r="280" stroke="#F5EFE0" stroke-width="1"/>
+          <circle cx="300" cy="300" r="220" stroke="#F5EFE0" stroke-width="0.5"/>
+          <circle cx="300" cy="300" r="160" stroke="#F5EFE0" stroke-width="0.5"/>
+          <line x1="20"  y1="300" x2="580" y2="300" stroke="#F5EFE0" stroke-width="0.5"/>
+          <line x1="300" y1="20"  x2="300" y2="580" stroke="#F5EFE0" stroke-width="0.5"/>
+          <path d="M300 80 C360 150, 420 200, 300 300 C180 400, 240 450, 300 520" stroke="#B8963E" stroke-width="1" fill="none"/>
+        </svg>
+      </div>
+    </div>
+    <div class="hero-overlay absolute inset-0"></div>
+
+    <!-- Content -->
+    <div class="relative flex-1 flex flex-col items-center justify-center text-center px-6 pt-24 pb-16">
+      <!-- Badge -->
+      <div class="fade-up mb-6 inline-flex items-center gap-3 border border-gold/40 rounded-full px-6 py-2 bg-espresso/20 backdrop-blur-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+        <span class="font-sans text-xs text-parchment/90 tracking-[0.2em] uppercase">Dal 2018 · Padang, Sumatera Barat</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+      </div>
+
+      <!-- Name -->
+      <h1 class="fade-up delay-1 font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-cream leading-none tracking-tight mb-4">
+        Italian<br/><span class="italic text-gold">Cafe</span>
+      </h1>
+
+      <!-- Tagline -->
+      <p class="fade-up delay-2 font-body text-lg sm:text-xl md:text-2xl text-parchment/85 italic max-w-xl leading-relaxed mb-10">
+        L'arte della tradizione in ogni singolo sorso.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="fade-up delay-3 flex flex-col sm:flex-row gap-4 items-center">
+        <a href="#menu"
+           class="px-8 py-3.5 bg-cream text-espresso font-sans text-sm tracking-widest uppercase rounded-full hover:bg-parchment transition-colors duration-300 font-medium">
+          Lihat Menu
+        </a>
+        <a href="https://wa.me/6281234567890?text=Halo!%20Saya%20ingin%20memesan%20di%20Italian%20Cafe."
+           target="_blank"
+           class="wa-btn px-8 py-3.5 bg-sage text-cream font-sans text-sm tracking-widest uppercase rounded-full hover:bg-forest transition-colors duration-300 font-medium flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+          </svg>
+          Pesan via WhatsApp
+        </a>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="fade-up delay-4 absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-parchment/50">
+        <span class="font-sans text-xs tracking-[0.2em]">SCROLL</span>
+        <div class="w-px h-10 bg-gradient-to-b from-parchment/50 to-transparent animate-bounce"></div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="relative bg-espresso/80 backdrop-blur-sm border-t border-gold/20 py-6 px-6">
+      <div class="max-w-4xl mx-auto grid grid-cols-3 gap-4 text-center">
+        <div>
+          <p class="font-display text-2xl sm:text-3xl text-gold font-semibold">6+</p>
+          <p class="font-sans text-xs text-parchment/60 tracking-widest uppercase mt-1">Tahun Berdiri</p>
+        </div>
+        <div class="border-x border-gold/20">
+          <p class="font-display text-2xl sm:text-3xl text-gold font-semibold">40+</p>
+          <p class="font-sans text-xs text-parchment/60 tracking-widest uppercase mt-1">Item Menu</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl sm:text-3xl text-gold font-semibold">4.9★</p>
+          <p class="font-sans text-xs text-parchment/60 tracking-widest uppercase mt-1">Rating Pelanggan</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ ABOUT ══════════════ -->
+  <section id="about" class="py-24 px-6 bg-linen">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
+      <!-- Decorative frame (placeholder image) -->
+      <div class="w-full md:w-2/5 flex-shrink-0">
+        <div class="relative">
+          <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-forest via-bark to-espresso flex items-end p-6">
+            <div class="text-cream/80">
+              <p class="font-display text-4xl font-bold italic leading-none">Ogni sorso,<br/>una storia.</p>
+            </div>
+          </div>
+          <!-- Floating badge -->
+          <div class="absolute -bottom-5 -right-5 bg-gold text-espresso rounded-xl px-5 py-3 shadow-xl">
+            <p class="font-display text-3xl font-bold">2018</p>
+            <p class="font-sans text-xs tracking-widest uppercase">Est.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="flex-1">
+        <p class="section-label mb-4">Tentang Kami</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-semibold text-espresso leading-tight mb-6">
+          Rasa Italia,<br/>Hangat <span class="italic text-gold">Nusantara</span>
+        </h2>
+        <p class="font-body text-lg text-bark/80 leading-relaxed mb-5">
+          Italian Cafe lahir dari kecintaan mendalam pada tradisi kopi Italia yang kaya dan seni memasak autentik. Kami membawa cita rasa dari Firenze, Milano, dan Roma langsung ke cangkir Anda — di jantung kota Padang.
+        </p>
+        <p class="font-body text-lg text-bark/80 leading-relaxed mb-8">
+          Setiap biji kopi kami dipilih dengan cermat, setiap hidangan dimasak dengan penuh cinta. Karena bagi kami, momen bersama secangkir kopi adalah seni yang tak ternilai.
+        </p>
+        <div class="divider">
+          <span class="font-sans text-xs text-muted tracking-widest uppercase">Espresso · Pasta · Dolce</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ MENU ══════════════ -->
+  <section id="menu" class="py-24 px-6 bg-cream">
+    <!-- Header -->
+    <div class="max-w-6xl mx-auto text-center mb-16">
+      <p class="section-label mb-3">Menu Kami</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-semibold text-espresso mb-4">
+        Pilihan <span class="italic text-gold">Istimewa</span>
+      </h2>
+      <p class="font-body text-xl text-muted max-w-lg mx-auto">Dibuat segar setiap hari dengan bahan pilihan dan resep tradisional Italia.</p>
+    </div>
+
+    <!-- Category: Minuman -->
+    <div class="max-w-6xl mx-auto mb-16">
+      <div class="divider mb-10">
+        <span class="font-display text-2xl text-espresso italic font-semibold px-4">☕ Minuman</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Espresso -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-espresso to-bark flex items-center justify-center">
+            <span class="text-7xl">☕</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Espresso Classico</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 28K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Shot espresso murni dengan crema sempurna. Kuat, pekat, dan penuh karakter.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="text-xs font-sans text-sage bg-sage/10 px-2 py-1 rounded-full">Best Seller</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cappuccino -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-earth to-muted flex items-center justify-center">
+            <span class="text-7xl">🥛</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Cappuccino Romano</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 38K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Espresso, susu panas, dan foam lembut dengan rasio sempurna ala barista Italia.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="text-xs font-sans text-earth bg-earth/10 px-2 py-1 rounded-full">Favorit</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Affogato -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-bark to-espresso flex items-center justify-center">
+            <span class="text-7xl">🍨</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Affogato al Caffè</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 45K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Gelato vanilla premium yang "ditenggelamkan" dalam shot espresso panas. Surga dalam cangkir.</p>
+          </div>
+        </div>
+
+        <!-- Latte -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-muted to-earth flex items-center justify-center">
+            <span class="text-7xl">🎨</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Latte Art</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 42K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Latte sutra dengan seni latte yang indah. Lembut, creamy, dan memanjakan mata.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="text-xs font-sans text-gold bg-gold/10 px-2 py-1 rounded-full">Instagramable</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cioccolata -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-bark to-earth flex items-center justify-center">
+            <span class="text-7xl">🍫</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Cioccolata Calda</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 35K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Cokelat panas kental ala Italia dengan sentuhan kayu manis. Hangat dan memanjakan.</p>
+          </div>
+        </div>
+
+        <!-- Limonata -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-sage to-forest flex items-center justify-center">
+            <span class="text-7xl">🍋</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Limonata Fresca</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 32K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Lemonade Italia segar dengan mint dan soda. Sempurna untuk cuaca Padang yang hangat.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Category: Makanan -->
+    <div class="max-w-6xl mx-auto">
+      <div class="divider mb-10">
+        <span class="font-display text-2xl text-espresso italic font-semibold px-4">🍽️ Makanan</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Spaghetti -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-gold/70 to-earth flex items-center justify-center">
+            <span class="text-7xl">🍝</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Spaghetti Bolognese</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 68K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Pasta al dente dengan ragù daging sapi yang dimasak lambat selama 4 jam. Resep asli Bologna.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="text-xs font-sans text-sage bg-sage/10 px-2 py-1 rounded-full">Best Seller</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bruschetta -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-earth to-gold/60 flex items-center justify-center">
+            <span class="text-7xl">🥖</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Bruschetta Classica</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 48K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Roti sourdough panggang dengan tomat segar, basil, bawang putih, dan minyak zaitun premium.</p>
+          </div>
+        </div>
+
+        <!-- Pizza -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-gold/80 to-bark flex items-center justify-center">
+            <span class="text-7xl">🍕</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Pizza Margherita</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 85K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Pizza Napoletana dengan saus tomat San Marzano, mozzarella fior di latte, dan basil segar.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="text-xs font-sans text-gold bg-gold/10 px-2 py-1 rounded-full">Chef's Pick</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risotto -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-muted to-bark flex items-center justify-center">
+            <span class="text-7xl">🫕</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Risotto ai Funghi</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 78K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Risotto cremoso dengan campuran jamur porcini, truffle oil, dan parmigiano reggiano.</p>
+          </div>
+        </div>
+
+        <!-- Tiramisu -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-espresso to-bark flex items-center justify-center">
+            <span class="text-7xl">🍰</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Tiramisù Originale</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 52K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Tiramisù klasik Veneto dengan mascarpone, savoiardi, espresso, dan taburan kakao Valrhona.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="text-xs font-sans text-sage bg-sage/10 px-2 py-1 rounded-full">Best Seller</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panna Cotta -->
+        <div class="menu-card bg-linen border border-parchment rounded-2xl overflow-hidden shadow-sm">
+          <div class="h-44 bg-gradient-to-br from-parchment to-muted flex items-center justify-center">
+            <span class="text-7xl">🍮</span>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl font-semibold text-espresso">Panna Cotta</h3>
+              <span class="font-sans text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">Rp 45K</span>
+            </div>
+            <p class="font-body text-muted text-base leading-relaxed">Puding krim Italia yang halus dengan saus beri merah segar. Ringan, elegan, memukau.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ CTA WHATSAPP ══════════════ -->
+  <section class="py-20 px-6 bg-espresso">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="section-label text-gold/70 mb-4">Reservasi & Pemesanan</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-semibold text-cream leading-tight mb-5">
+        Siap memesan atau<br/><span class="italic text-gold">reservasi meja?</span>
+      </h2>
+      <p class="font-body text-xl text-parchment/70 mb-10 max-w-lg mx-auto">
+        Hubungi kami langsung via WhatsApp untuk pemesanan menu, reservasi tempat, atau pertanyaan lainnya. Kami siap melayani!
+      </p>
+      <a href="https://wa.me/6281234567890?text=Halo%20Italian%20Cafe!%20Saya%20ingin%20memesan%20%2F%20reservasi%20meja."
+         target="_blank"
+         class="wa-btn inline-flex items-center gap-3 px-10 py-4 bg-sage text-cream font-sans text-sm tracking-widest uppercase rounded-full hover:bg-moss transition-colors duration-300 font-medium text-base">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.196.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+        </svg>
+        Pesan via WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer id="contact" class="bg-espresso border-t border-gold/10 py-14 px-6">
+    <div class="max-w-6xl mx-auto">
+      <!-- Top -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+        <!-- Brand -->
+        <div>
+          <h3 class="font-display text-3xl font-semibold text-cream mb-3">
+            Italian <span class="italic text-gold">Cafe</span>
+          </h3>
+          <p class="font-body text-lg italic text-parchment/60 mb-5">
+            L'arte della tradizione<br/>in ogni singolo sorso.
+          </p>
+          <div class="flex gap-4">
+            <!-- Instagram -->
+            <a href="#" class="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center text-parchment/60 hover:text-gold hover:border-gold transition-colors duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+              </svg>
+            </a>
+            <!-- TikTok -->
+            <a href="#" class="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center text-parchment/60 hover:text-gold hover:border-gold transition-colors duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3V0Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Jam Buka -->
+        <div>
+          <h4 class="font-sans text-xs tracking-widest uppercase text-gold mb-5">Jam Operasional</h4>
+          <ul class="space-y-3 font-body text-lg text-parchment/70">
+            <li class="flex justify-between">
+              <span>Senin – Jumat</span>
+              <span class="text-parchment/50">08:00 – 22:00</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Sabtu</span>
+              <span class="text-parchment/50">09:00 – 23:00</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Minggu</span>
+              <span class="text-parchment/50">10:00 – 22:00</span>
+            </li>
+          </ul>
+          <div class="mt-5 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sage animate-pulse"></span>
+            <span class="font-sans text-xs text-sage tracking-wide">Buka Hari Ini</span>
+          </div>
+        </div>
+
+        <!-- Lokasi & Kontak -->
+        <div>
+          <h4 class="font-sans text-xs tracking-widest uppercase text-gold mb-5">Lokasi & Kontak</h4>
+          <div class="space-y-4 font-body text-parchment/70">
+            <div class="flex gap-3">
+              <span class="text-gold mt-0.5 flex-shrink-0">📍</span>
+              <p class="text-lg leading-snug">Jl. Sudirman No. 88,<br/>Padang, Sumatera Barat 25119</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-gold flex-shrink-0">📞</span>
+              <a href="tel:+6281234567890" class="text-lg hover:text-gold transition-colors">+62 812-3456-7890</a>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-gold flex-shrink-0">✉️</span>
+              <a href="mailto:hello@italiancafe.id" class="text-lg hover:text-gold transition-colors">hello@italiancafe.id</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider & bottom -->
+      <div class="border-t border-gold/15 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-parchment/30 font-sans text-xs tracking-wide">
+        <p>© 2025 Italian Cafe. Tutti i diritti riservati.</p>
+        <p>Made with ♥ in Padang, Indonesia</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WA button (mobile) -->
+  <a href="https://wa.me/6281234567890?text=Halo%20Italian%20Cafe!%20Saya%20ingin%20memesan."
+     target="_blank"
+     class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-sage rounded-full flex items-center justify-center shadow-2xl hover:bg-forest transition-colors duration-300 wa-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16">
+      <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.196.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+    </svg>
+  </a>
+
+</body>
+</html>
